@@ -69,6 +69,8 @@ ExecStart=/usr/bin/python3 -m matterunit3d matterunit3d.ini
 WorkingDirectory=/.../matter-unit3d-api                         # Path to git repo
 Restart=always
 RestartSec=5s
+StandardOutput=journal
+StandardError=journal
 #User=matterbridge
 
 [Install]

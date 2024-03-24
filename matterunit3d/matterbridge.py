@@ -31,8 +31,9 @@ class matterbridge(service):
         async with self.request("GET", "/api/stream") as req:
             async for msg in self.app.jsonlines(req):
                 if msg["text"] != "":
-                    username = msg["username"]
-                    message = msg["text"]
+                    username, message = self.app.get_message_attributes(msg, "matterbridgeapi")
+
                     print(f"(IRC -> Chatbox) [{username}] {message}")
                     self.logger.info(f"(IRC -> Chatbox) [{username}] {message}")
+
                     await self.app.unit3d.send(msg)

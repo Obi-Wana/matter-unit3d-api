@@ -18,20 +18,14 @@ class unit3d(service):
         url = self.addr + url + self.chatroom_id + "?api_token=" + self.token
 
         return self.app.session.request(method, url)
-    
-    def collect_msg_information(self, msg):
-        username = msg["username"]
-        self.text = msg["text"]
-        self.created_at = msg["timestamp"]
-        self.msg = (f'[{username}] {self.text}')
-
-        return username, self.msg, self.created_at
 
     def post(self, url, msg):
-        username, self.msg, self.created_at = self.collect_msg_information(msg)
+        username, message = self.app.get_message_attributes(msg, "matterbridgeapi")
+        message = (f'[{username}] {message}')
+
         payload = {
             'username': self.chatroom_id,
-            'message': self.msg,
+            'message': message,
             'chatroom_id': self.chatroom_id,
             'save': 'true',
             'targeted': '0',
@@ -39,7 +33,6 @@ class unit3d(service):
         }
 
         url = self.addr + url
-
         return self.app.session.post(url, json = payload)
 
     async def send(self, msg):
@@ -53,12 +46,7 @@ class unit3d(service):
             async for msg in self.app.jsonlines(req):
                 messages = sorted(msg["data"], key=lambda x: x["id"], reverse=True)
                 for msg in messages:
-                    message_id = msg['id']
-                    username = msg["username"]
-                    message = msg["message"]
-                    created_at = datetime.strptime(msg['created_at'], '%Y-%m-%d %H:%M:%S')
-
-                    
+                    message_id, username, message, created_at = self.app.get_message_attributes(msg, "unit3dchatbox")
 
                     if username != self.username and message_id not in self.processed_messages:
                         if created_at < datetime.now() - timedelta(seconds=5):

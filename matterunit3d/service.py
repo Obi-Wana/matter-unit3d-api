@@ -1,5 +1,7 @@
 import logging
 
+from systemd.journal import JournalHandler
+
 from . import consts
 
 class service:
@@ -9,7 +11,7 @@ class service:
         self.token = token
         self.chatroom_id = chatroom_id
         self.gateway = gateway
-        self.logger = logging.getLogger(f"{consts.product_name}/{type(self).__name__}")
+        self.logger = logging.getLogger(f"{consts.product_name}")
         self.init(*args, **kwargs)
     
     def init(self):
