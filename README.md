@@ -7,7 +7,7 @@ chat services supported by Matterbridge.
 ## Setup
 - Setup Matterbridge on your server (see example config below) as a systemd service
 - Clone this repository to a local directory
-- Adjust configs and run it as systemd service (`/usr/bin/python3 /matter-unit3d-api/matterunit3d.py --config /matter-unit3d-api/matterunit3d.json`)
+- Adjust configs and run it as systemd service (or by hand `usr/bin/python3 -m matterunit3d matterunit3d.ini`)
 
 ## Example Configuration
 ### matterbridge.toml
@@ -42,25 +42,18 @@ inout = [
 Add these to your existing Matterbridge config to set up an API instance
 that Mattereddit can connect to.
 
-### matterunit3d.json
+### matterunit3d.ini
 
 ```
-{
-    "unit3d":
-    {
-        "sync_user_id": "1",                                                # ID of the UNIT3D user that posts the messages in UNIT3D chatbox
-        "sync_user_username": "Bot",                                        # Username of user used in sync_user_id
-        "sync_user_token": "<TOKEN>",                                       # UNIT3D API token of sync_user
-        "receive": "https://aither.dev/api/chats/messages/<Chatroom_ID>",   # Endpoint to check for new messages from Chatbox v3
-        "send": "https://aither.dev/api/chats/messages",                    # Endpoint to send a new message to Chatbox v3
-        "chatroom_id": "1"                                                  # The Chatroom ID (as in the UNIT3D DB)
-    },
-    "matterbridge":
-    {
-        "api": "http://127.0.0.1:4242",
-        "gateway": "unit3d-irc-sb"
-    }
-}
+[unit3d]
+address = https://unit3d.site/
+username = Bot
+token = <Bot_API_TOken>
+chatroom_id = 1
+
+[matterbridge]
+address = http://127.0.0.1:4242     # Must match the matterbrdige API bind address
+gateway = unit3d-irc-sb             # Must match the matterbridge gateway name
 ```
 
 ## Running as systemd service
@@ -72,7 +65,8 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /matter-unit3d-api/matterunit3d.py --config /matter-unit3d-api/matterunit3d.json
+ExecStart=/usr/bin/python3 -m matterunit3d matterunit3d.ini
+WorkingDirectory=/.../matter-unit3d-api                         # Path to git repo
 Restart=always
 RestartSec=5s
 #User=matterbridge

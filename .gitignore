@@ -1,3 +1,5 @@
 venv
 .idea
+__pycache__/
+matterunit3d.ini
 matterunit3d.json
