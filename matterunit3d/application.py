@@ -30,7 +30,7 @@ class application:
         self.running = False
     
     async def jsonlines(self, req):
-        async for raw in req.content: # iterate over lines
+        async for raw in req.content:
             line = raw.decode()
             yield json.loads(line)
 
