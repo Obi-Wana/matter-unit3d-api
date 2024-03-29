@@ -4,6 +4,13 @@ Matterunit3d is a [Matterbridge](https://github.com/42wim/matterbridge)
 API plugin (forked from "matteredit 2") allowing you to connect UNIT3D chatbox chats to the various
 chat services supported by Matterbridge.
 
+## Features
+This reads messages from the Matterbridge API and posts them to UNIT3D chat using a custom API endpoint.
+Message flow from IRC -> Chatbox: <br>
+IRC -> Matterbridge Bot reads the message and posts it to the Matterbridge API -> Matterunit3d picks up the message and posts it to `https://unit3d.dev/api/chats/messages`.
+<br>
+A custom API endpoint in UNIT3D must exist in order to receive the messages and forward them to the existing `messages()` function.
+
 ## Setup
 - Setup Matterbridge on your server (see example config below) as a systemd service
 - Clone this repository to a local directory
