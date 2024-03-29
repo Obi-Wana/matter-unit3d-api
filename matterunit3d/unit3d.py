@@ -11,8 +11,6 @@ class unit3d(service):
     def init(self, username, fmt = "{username}: {message}"):
         self.username = username
         self.fmt = fmt
-        # Variable to store IDs or timestamps of processed messages
-        self.processed_messages = set()
     
     def request(self, method, url):
         url = self.addr + url + self.chatroom_id + "?api_token=" + self.token
@@ -39,7 +37,3 @@ class unit3d(service):
         async with self.post("/api/chats/messages?api_token=" + self.token, msg) as req:
             if req.status >= 400:
                 self.logger.error(f"{req.status}\n{await req.text()}")
-    
-    # Read message in UNIT3D chatbox and pass them to matterbridge.send() (Chatbox -> IRC)
-    async def watch(self):
-        pass

@@ -12,13 +12,16 @@ class application:
     def __init__(self, unit3d_cfg, matterbridge_cfg):
         self.unit3d = unit3d(self, **unit3d_cfg)
         self.matterbridge = matterbridge(self, **matterbridge_cfg)
-        self.services = [self.unit3d, self.matterbridge]
+        #self.services = [self.unit3d, self.matterbridge]
+        self.services = [self.matterbridge]
         self.running = False
 
     async def loop(self, service):
         while self.running:
-            await service.watch()
-            await asyncio.sleep(3)
+            try:
+                await asyncio.wait_for(service.watch(), timeout=30)
+            except asyncio.TimeoutError:
+                print("Timeout while waiting for watch() function, retrying.")
 
     async def run(self):
         self.running = True
@@ -32,7 +35,11 @@ class application:
     async def jsonlines(self, req):
         async for raw in req.content:
             line = raw.decode()
-            yield json.loads(line)
+            try:
+                json_out = json.loads(line)
+            except:
+                print("JSON Decode error")
+            yield json_out
 
     def get_message_attributes(self, msg, source):
         if source == "matterbridgeapi":

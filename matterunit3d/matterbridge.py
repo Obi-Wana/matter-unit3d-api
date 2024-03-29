@@ -30,7 +30,7 @@ class matterbridge(service):
     async def watch(self):
         async with self.request("GET", "/api/stream") as req:
             async for msg in self.app.jsonlines(req):
-                if msg["text"] != "":
+                if msg["text"] != '':
                     username, message = self.app.get_message_attributes(msg, "matterbridgeapi")
 
                     print(f"(IRC -> Chatbox) [{username}] {message}")
