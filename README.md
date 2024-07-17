@@ -3,6 +3,7 @@
 matterunit3d is a [matterbridge](https://github.com/42wim/matterbridge)
 API plugin (forked from "matteredit 2") allowing you to connect [UNIT3D](https://github.com/HDInnovations/UNIT3D-Community-Edition) chatbox chats to the various
 chat services supported by Matterbridge. This extension handles only messages coming from matterbridge and going to UNIT3D chatbox.
+Messages *from* UNIT3D chatbox to IRC are handled within the UNIT3D file located at `app/Http/Controllers/API/ChatController.php`, see `ircPosttoIrcChat()`. Basically, it sends a HTTP message to the matterbridge API endpoint configured in the `config/chat-bridge.php` file.
 
 ## Features
 This reads messages from the Matterbridge API and posts them to UNIT3D chat using a custom API endpoint.
