@@ -24,7 +24,7 @@ class unit3d(service):
         payload = {
             'username': self.chatroom_id,
             'message': message,
-            'chatroom_id': self.chatroom_id,
+            'chatroom_id': int(self.chatroom_id),
             'save': 'true',
             'targeted': '0',
             'user_id': '2'
