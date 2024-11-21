@@ -47,11 +47,3 @@ class application:
             message = msg["text"]
 
             return username, message
-
-        elif source == "unit3dchatbox":
-            message_id = msg['id']
-            username = msg["username"]
-            message = msg["message"]
-            created_at = datetime.strptime(msg['created_at'], '%Y-%m-%d %H:%M:%S')
-
-            return message_id, username, message, created_at
